@@ -1,65 +1,133 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useState } from "react";
+
+type Quote = { id: number; frase: string };
 
 export default function Home() {
+  const [quote, setQuote] = useState<Quote | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+
+  // Cargar una frase al inicio
+  const fetchQuote = async () => {
+    setLoading(true);
+    setMessage(null);
+    try {
+      const res = await fetch("/api/quote?limit=1", { cache: "no-store" });
+      const data = await res.json();
+      if (!res.ok || !data?.length) throw new Error("No se pudo obtener frase");
+      setQuote(data[0]);
+    } catch (err) {
+      setMessage("Error cargando frase 😢");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchQuote();
+  }, []);
+
+  const checkAnswer = async (guess: "rosalia" | "biblia") => {
+    if (!quote) return;
+    setLoading(true);
+    setMessage(null);
+    try {
+      const res = await fetch("/api/check", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: quote.id, guess }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || "Error en la comprobación");
+      setMessage(
+        data.correct
+          ? `✅ ¡Correcto! Era ${
+              data.correctSource === "rosalia" ? "Rosalía" : "la Biblia"
+            }`
+          : `❌ Fallaste. Era ${
+              data.correctSource === "rosalia" ? "Rosalía" : "la Biblia"
+            }`
+      );
+    } catch (err: any) {
+      setMessage(err.message || "Error al comprobar");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const nextQuote = async () => {
+    await fetchQuote();
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="rosalia-main flex min-h-screen items-center justify-center p-4">
+      <div className="bg-effect" />
+      <div className="score-display">
+        <div className="score-item">
+          <span>✅ Correct</span>
+          <span className="score-value" id="correctScore">
+            0
+          </span>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="score-item">
+          <span>✅ Correct</span>
+          <span className="score-value" id="correctScore">
+            0
+          </span>
         </div>
-      </main>
-    </div>
+        <div className="score-item">
+          <span>✅ Correct</span>
+          <span className="score-value" id="correctScore">
+            0
+          </span>
+        </div>
+      </div>
+      <div className="game-zone p-8">
+        <h1 className="mb-4 text-2xl font-bold">¿Rosalía o la Biblia?</h1>
+
+        {loading && <p className="text-gray-500">Cargando...</p>}
+
+        {quote && !loading && (
+          <blockquote className="mb-6 text-lg italic text-gray-800">
+            “{quote.frase}”
+          </blockquote>
+        )}
+
+        <div className="flex justify-center gap-4">
+          <button
+            onClick={() => checkAnswer("rosalia")}
+            disabled={loading || !quote}
+            className="rounded-xl bg-pink-600 px-5 py-3 text-white font-semibold hover:bg-pink-700 transition"
+          >
+            Rosalía
+          </button>
+          <button
+            onClick={() => checkAnswer("biblia")}
+            disabled={loading || !quote}
+            className="rounded-xl bg-indigo-600 px-5 py-3 text-white font-semibold hover:bg-indigo-700 transition"
+          >
+            Biblia
+          </button>
+        </div>
+
+        {message && (
+          <div className="mt-6 text-lg font-medium text-gray-700">
+            {message}
+          </div>
+        )}
+
+        <div className="mt-8">
+          <button
+            onClick={nextQuote}
+            disabled={loading}
+            className="rounded-lg border border-gray-300 px-4 py-2 text-sm hover:bg-gray-100"
+          >
+            Siguiente frase
+          </button>
+        </div>
+      </div>
+    </main>
   );
 }
