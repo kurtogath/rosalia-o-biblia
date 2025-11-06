@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Image from "next/image";
-import Link from "next/link";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,21 +15,6 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Rosalia o Biblia",
   description: "Rosalia o biblia",
-};
-
-const renderNavbar = () => {
-  return (
-    <nav className="navbar">
-      <Link href="/">
-        <span className="logo pl-5">Rosalía o la Biblia</span>
-      </Link>
-      <Link href="https://unkedition.com" target="blank">
-        <span>
-          <Image src="/icon.webp" alt="unk icon" width={100} height={100} />
-        </span>
-      </Link>
-    </nav>
-  );
 };
 
 export default function RootLayout({
@@ -62,7 +45,6 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div className="bg-effect" />
-        {renderNavbar()}
         {children}
       </body>
     </html>

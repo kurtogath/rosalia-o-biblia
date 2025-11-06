@@ -10,9 +10,6 @@
   --motomami-hoover: #cd2937;
   --motomami-alpha: rgba(165, 29, 41, 0.08);
   --biblia-alpha: rgba(0, 119, 181, 0.08);
-  --r: 48px; /* radio del “diente” */
-  --h: 120px; /* alto de franja de ola */
-  --speed: 5s; /* velocidad de animación */
 }
 
 @theme inline {
@@ -162,4 +159,108 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* WELCOME */
+
+.welcome-title {
+  background: linear-gradient(135deg, var(--motomami) 0%, var(--biblia) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.btn-start-game {
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--motomami) 0%, var(--biblia) 100%);
+  box-shadow: 0 10px 25px rgba(245, 87, 108, 0.3);
+}
+
+.btn-start-game:hover {
+  box-shadow: 0 15px 35px rgba(245, 87, 108, 0.4);
+}
+
+/* Modal */
+.modal-overlay {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.btn-start {
+  background: linear-gradient(135deg, var(--motomami) 0%, var(--biblia) 100%);
+}
+
+.btn-start:hover {
+  background: linear-gradient(135deg, var(--motomami) 0%, var(--biblia) 100%);
+}
+
+/* Slider personalizado */
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--motomami) 0%, var(--biblia) 100%);
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(102, 126, 234, 0.4);
+  transition: all 0.2s;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.6);
+}
+
+.slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--motomami) 0%, var(--biblia) 100%);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 10px rgba(102, 126, 234, 0.4);
+  transition: all 0.2s;
+}
+
+.slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.6);
+}
+
+/* Animaciones de iconos */
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 2s infinite;
 }
