@@ -158,7 +158,7 @@ export default function Home() {
     return (
       <div className="game-zone p-8">
         {!(!currentQuote && correctAnswers + wrongAnswers > 0) && (
-          <h1 className="mb-4 text-lg font-bold">Esta frase es de.....</h1>
+          <h1 className="mb-4 text-2xl">Esta frase es de.....</h1>
         )}
 
         {loading && !currentQuote && (
@@ -167,7 +167,7 @@ export default function Home() {
 
         {currentQuote && (
           <>
-            <blockquote className="mb-6 text-2xl italic quote-zone">
+            <blockquote className="mb-6 text-2xl italic quote-zone font-bold">
               "{currentQuote.frase}"
             </blockquote>
 
