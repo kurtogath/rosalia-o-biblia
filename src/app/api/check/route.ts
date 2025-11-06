@@ -25,6 +25,6 @@ export async function POST(req: Request) {
   return NextResponse.json({
     correct,
     correctSource: isRosalia ? 'rosalia' : 'biblia',
-    origen: rows[0].origen ?? null,
+    origen: rows[0].origen ?? null
   });
 }

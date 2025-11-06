@@ -3,6 +3,16 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --biblia: rgb(0, 119, 181);
+  --biblia-hover: #0090dd;
+  --red: #ff0040;
+  --motomami: #a51d29;
+  --motomami-hoover: #cd2937;
+  --motomami-alpha: rgba(165, 29, 41, 0.08);
+  --biblia-alpha: rgba(0, 119, 181, 0.08);
+  --r: 48px; /* radio del “diente” */
+  --h: 120px; /* alto de franja de ola */
+  --speed: 5s; /* velocidad de animación */
 }
 
 @theme inline {
@@ -36,14 +46,10 @@ body {
   height: 100%;
   pointer-events: none;
   z-index: 1;
-  background: radial-gradient(
-      circle at 20% 50%,
-      rgba(0, 119, 181, 0.08) 0%,
-      transparent 50%
-    ),
+  background: radial-gradient(circle at 20% 50%, #a51d2966 0%, transparent 50%),
     radial-gradient(
       circle at 80% 50%,
-      rgba(255, 0, 64, 0.08) 0%,
+      rgba(0, 119, 181, 0.4) 0%,
       transparent 50%
     );
   opacity: 0.4;
@@ -77,4 +83,83 @@ body {
   max-width: 650px;
   margin: 0 auto;
   text-align: center;
+}
+
+.icon-correct {
+  color: #22c55e;
+}
+.icon-error {
+  color: #ef4444;
+}
+.icon-total {
+  color: #3b82f6;
+}
+
+.logo {
+  color: var(--foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: linear-gradient(90deg, var(--motomami), var(--biblia));
+  -webkit-text-fill-color: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.btn-rosalia {
+  cursor: pointer;
+  color: var(--foreground);
+  background-color: var(--motomami);
+}
+
+.btn-rosalia:hover {
+  background-color: var(--motomami-hoover);
+}
+
+.btn-biblia {
+  cursor: pointer;
+  color: var(--foreground);
+  background-color: var(--biblia);
+}
+
+.btn-biblia:hover {
+  background-color: var(--biblia-hover);
+}
+
+.btn-rosalia:disabled {
+  cursor: not-allowed !important;
+}
+
+.btn-biblia:disabled {
+  cursor: not-allowed !important;
+}
+
+.navbar {
+  max-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn-next:hover {
+  background-color: lab(100 0 0 / 0.18);
+}
+
+.quote-zone {
+  height: 200px;
+  max-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.check-zone {
+  height: 60px;
+  max-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
