@@ -1,8 +1,9 @@
 "use client";
 
+import { checkQuoteAnswer, getQuotes } from "@/app/actions";
 import StartModal from "@/components/StartModal";
 import WelcomeScreen from "@/components/WelcomeScreen";
-import { CheckResponse, GuessType, Quote } from "@/types";
+import { GuessType, Quote } from "@/types";
 import { BarChart3, CheckCircle, XCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,12 +31,9 @@ export default function Home() {
     setOrigen(null);
     setLastCheck(null);
     try {
-      const res = await fetch(`/api/quote?limit=${count}`, {
-        cache: "no-store",
-      });
-      const data = await res.json();
-      if (!res.ok || !data?.length)
-        throw new Error("No se pudo obtener frases");
+      const data = await getQuotes(count);
+
+      if (!data?.length) throw new Error("No se pudo obtener frases");
 
       setQuotes(data);
       setCurrentQuote(data[0]);
@@ -43,6 +41,8 @@ export default function Home() {
       setWrongAnswers(0);
       setCorrectAnswers(0);
       setGameStarted(true);
+
+      // analytics.gameStarted(count);
     } catch (err) {
       setMessage("Error cargando frases");
     } finally {
@@ -61,24 +61,17 @@ export default function Home() {
     setLoading(true);
     setMessage(null);
     setOrigen(null);
-    setCurrentGuess(guess);
 
     try {
-      const res = await fetch("/api/check", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: currentQuote.id, guess }),
-      });
-      const data: CheckResponse = await res.json();
-
-      if (!res.ok) throw new Error(data?.error || "Error en la comprobación");
+      const data = await checkQuoteAnswer(currentQuote.id, guess);
 
       setMessage(data.correctSource === "rosalia" ? "Rosalía" : "la Biblia");
       setOrigen(data.origen);
       setLastCheck(data.correct);
       setHasChecked(true);
 
-      // Set the counters
+      // analytics.questionAnswered(data.correct, currentQuoteIndex + 1);
+
       if (data.correct) {
         setCorrectAnswers((prev) => prev + 1);
       } else {
@@ -92,7 +85,7 @@ export default function Home() {
   };
 
   const nextQuote = () => {
-    if (!hasChecked) return; // Only works if it's checked
+    if (!hasChecked) return;
 
     const nextIndex = currentQuoteIndex + 1;
 
@@ -104,7 +97,6 @@ export default function Home() {
       setMessage(null);
       setOrigen(null);
     } else {
-      // Game end
       setMessage("¡Has completado todas las frases!");
       setCurrentQuote(null);
     }
@@ -121,6 +113,53 @@ export default function Home() {
     setOrigen(null);
     setCorrectAnswers(0);
     setWrongAnswers(0);
+  };
+
+  const shareOnTwitter = () => {
+    const percentage = Math.round((correctAnswers / quoteCount) * 100);
+
+    // Mensaje dinámico según puntuación
+    let message = "";
+    let emoji = "";
+
+    if (percentage === 100) {
+      message = "¡Perfecto! Acerté todas las frases";
+      emoji = "🎉";
+    } else if (percentage >= 80) {
+      message = "¡Casi perfecto! Soy un experto";
+      emoji = "🔥";
+    } else if (percentage >= 60) {
+      message = "¡Buen resultado! Me defiendo bien";
+      emoji = "👏";
+    } else if (percentage >= 40) {
+      message = "No está mal, pero puedo mejorar";
+      emoji = "💪";
+    } else {
+      message = "Esto es más difícil de lo que pensaba";
+      emoji = "😅";
+    }
+
+    // Texto del tweet
+    const tweetText = `
+¿Letra de Rosalía o versículo de la Biblia?
+
+Mi puntuación: ${correctAnswers}/${quoteCount} (${percentage}%) 🎯
+
+¿Puedes superarme? 👇
+
+https://rosalia.unkedition.com/
+
+#rosalia #lux #motomami #unk
+`;
+
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+      tweetText
+    )}`;
+
+    window.open(twitterUrl, "_blank", "width=550,height=420");
+
+    // // Track el evento en analytics
+    // analytics.shareResult('twitter');
   };
 
   // Renders
@@ -176,30 +215,20 @@ export default function Home() {
         )}
 
         {!currentQuote && correctAnswers + wrongAnswers > 0 && (
-          <div className="mb-6 text-center">
-            <h2 className="text-xl font-bold mb-2">¡Juego terminado!</h2>
-            <p className="text-lg mb-4">
-              Puntuación final: {correctAnswers} / {quoteCount}
-            </p>
-            <p className="text-gray-600 mb-6">
-              {correctAnswers === quoteCount
-                ? "¡Perfecto! Eres un experto 🎉"
-                : correctAnswers >= quoteCount * 0.7
-                ? "¡Muy bien! Gran puntuación 👏"
-                : correctAnswers >= quoteCount * 0.5
-                ? "No está mal, ¡sigue practicando! 💪"
-                : "¡Inténtalo de nuevo! 🎯"}
-            </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+            <button
+              onClick={shareOnTwitter}
+              className="btn-share-twitter rounded-lg px-6 py-3 cursor-pointer font-semibold flex items-center gap-2 transition-all hover:scale-105"
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+              Compartir en X
+            </button>
 
             <button
               onClick={resetGame}
-              className="mt-4 btn-next rounded-lg border border-gray-300 px-4 py-2 cursor-pointer"
-            >
-              Compartir resultado
-            </button>
-            <button
-              onClick={resetGame}
-              className="mt-4 btn-next rounded-lg border border-gray-300 px-4 py-2 cursor-pointer"
+              className="btn-next rounded-lg border border-gray-300 px-6 py-3 cursor-pointer font-semibold transition-all hover:scale-105"
             >
               Jugar de nuevo
             </button>

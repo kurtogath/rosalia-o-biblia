@@ -281,3 +281,37 @@ body {
     height: 80px;
   }
 }
+
+.btn-share-twitter {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-share-twitter:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-share-twitter {
+  transition: all 0.3s ease;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .btn-share-twitter {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Estados adicionales */
+.btn-share-twitter:active {
+  transform: scale(0.95);
+}
+
+.btn-share-twitter:focus {
+  outline: none;
+  ring: 2px;
+  ring-offset: 2px;
+}
