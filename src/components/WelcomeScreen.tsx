@@ -9,7 +9,7 @@ interface WelcomeScreenProps {
 
 export default function WelcomeScreen({ onStartClick }: WelcomeScreenProps) {
   return (
-    <div className="welcome-screen min-h-screen flex items-center justify-center p-4">
+    <div className="flex items-center justify-center p-4">
       <div className="welcome-content max-w-2xl w-full text-center">
         <div className="mb-8 flex justify-center gap-8 items-center">
           <Music size={60} className="text-pink-500 animate-bounce" />

@@ -22,6 +22,7 @@ export default function Home() {
   const [quoteCount, setQuoteCount] = useState<number>(10);
   const [correctAnswers, setCorrectAnswers] = useState<number>(0);
   const [wrongAnswers, setWrongAnswers] = useState<number>(0);
+  const [currentGuess, setCurrentGuess] = useState<string>("");
 
   const fetchQuotes = async (count: number) => {
     setLoading(true);
@@ -60,6 +61,7 @@ export default function Home() {
     setLoading(true);
     setMessage(null);
     setOrigen(null);
+    setCurrentGuess(guess);
 
     try {
       const res = await fetch("/api/check", {
@@ -156,11 +158,7 @@ export default function Home() {
 
   const renderGameZone = () => {
     return (
-      <div className="game-zone p-8">
-        {!(!currentQuote && correctAnswers + wrongAnswers > 0) && (
-          <h1 className="mb-4 text-2xl">Esta frase es de.....</h1>
-        )}
-
+      <div className="game-zone p-4">
         {loading && !currentQuote && (
           <p className="text-gray-500">Cargando...</p>
         )}
@@ -168,7 +166,7 @@ export default function Home() {
         {currentQuote && (
           <>
             <blockquote className="mb-6 text-2xl italic quote-zone font-bold">
-              "{currentQuote.frase}"
+              ❝ {currentQuote.frase} ❞
             </blockquote>
 
             <div className="mb-4 text-sm text-gray-500">
@@ -192,6 +190,13 @@ export default function Home() {
                 ? "No está mal, ¡sigue practicando! 💪"
                 : "¡Inténtalo de nuevo! 🎯"}
             </p>
+
+            <button
+              onClick={resetGame}
+              className="mt-4 btn-next rounded-lg border border-gray-300 px-4 py-2 cursor-pointer"
+            >
+              Compartir resultado
+            </button>
             <button
               onClick={resetGame}
               className="mt-4 btn-next rounded-lg border border-gray-300 px-4 py-2 cursor-pointer"
@@ -220,16 +225,26 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="mt-6 text-lg font-medium flex items-center justify-center check-zone">
+            <div className="mt-6 text-lg font-medium flex flex-wrap items-center justify-center gap-2 check-zone">
               {message && (
                 <>
-                  {lastCheck ? (
-                    <CheckCircle className="icon-correct mr-1.5" size={20} />
-                  ) : (
-                    <XCircle className="icon-error mr-1.5" size={20} />
-                  )}
-                  {lastCheck ? "¡Correcto!" : "Incorrecto"} - Era de {message}
-                  {origen && ` (${origen})`}
+                  {/* Estado de la respuesta */}
+                  <span
+                    className={lastCheck ? "text-green-400" : "text-red-600"}
+                  >
+                    {lastCheck ? "¡Correcto!" : "Incorrecto"}
+                  </span>
+
+                  {/* Separador */}
+                  <span>-</span>
+
+                  {/* Emoji según respuesta correcta */}
+                  <span className="text-2xl">
+                    {message === "Rosalía" ? "💃" : "📖"}
+                  </span>
+
+                  {/* Origen (canción/versículo) */}
+                  {origen && <span className="text-gray-500">{origen}</span>}
                 </>
               )}
             </div>
@@ -271,19 +286,19 @@ export default function Home() {
   // Set WelcomeScreen
   if (!gameStarted) {
     return (
-      <>
+      <main className="welcome-screen flex items-center justify-center p-4">
         <WelcomeScreen onStartClick={() => setShowModal(true)} />
         <StartModal
           isOpen={showModal}
           onClose={() => setShowModal(false)}
           onStart={handleStartGame}
         />
-      </>
+      </main>
     );
   }
 
   return (
-    <main className="rosalia-main flex min-h-screen items-center justify-center p-4">
+    <main className="rosalia-main flex items-center justify-center p-4">
       {renderNavbar()}
       {renderScore()}
       {renderGameZone()}
