@@ -67,7 +67,7 @@ export async function generateStoryImage(
   
     // Logo UNK al final
     try {
-      const logo = await loadImage('/icon.webp');
+      const logo = await loadImage('/unk-logo-share.png');
       const logoSize = 250;
       const logoX = (canvas.width - logoSize) / 2;
       const logoY = canvas.height - 400;
