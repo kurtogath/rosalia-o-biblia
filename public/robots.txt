@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rosalia.unkedition.com/sitemap.xml
+
+Disallow: /api/
+Disallow: /_next/static/

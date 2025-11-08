@@ -6,8 +6,7 @@ export async function GET(req: Request) {
 
   // Reads the parameter 'limit' (default set to 1)
   const limitParam = Number(searchParams.get('limit')) || 1;
-  //Set max of 100 quotes
-  const limit = Math.max(1, Math.min(limitParam, 100));
+  const limit = Math.max(1, Math.min(limitParam, 10));
 
   const { rows } = await pool.query(
     `

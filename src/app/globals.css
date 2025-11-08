@@ -3,13 +3,13 @@
 :root {
   --background: #0a0a0a;
   --foreground: #ededed;
-  --biblia: rgb(0, 119, 181);
+  --biblia: #0077b5;
   --biblia-hover: #0090dd;
   --red: #ff0040;
   --motomami: #a51d29;
   --motomami-hoover: #cd2937;
   --motomami-alpha: rgba(165, 29, 41, 0.08);
-  --biblia-alpha: rgba(0, 119, 181, 0.08);
+  --biblia-alpha: #0077b514;
 }
 
 @theme inline {
@@ -314,4 +314,83 @@ body {
   outline: none;
   ring: 2px;
   ring-offset: 2px;
+}
+
+/* Botón de Instagram con degradado oficial */
+.btn-share-instagram {
+  background: linear-gradient(
+    45deg,
+    #f09433 0%,
+    #e6683c 25%,
+    #dc2743 50%,
+    #cc2366 75%,
+    #bc1888 100%
+  );
+  color: white;
+  box-shadow: 0 4px 12px rgba(225, 48, 108, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-share-instagram:hover:not(:disabled) {
+  background: linear-gradient(
+    45deg,
+    #e6683c 0%,
+    #dc2743 25%,
+    #cc2366 50%,
+    #bc1888 75%,
+    #f09433 100%
+  );
+  box-shadow: 0 6px 20px rgba(225, 48, 108, 0.4);
+  transform: scale(1.05);
+}
+
+.btn-share-instagram:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.btn-share-instagram:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 640px) {
+  .btn-share-instagram,
+  .btn-share-twitter,
+  .btn-next {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ============================================
+   GRUPO DE BOTONES
+   ============================================ */
+
+.share-buttons-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+@media (min-width: 640px) {
+  .share-buttons-group {
+    flex-direction: row;
+    justify-content: center;
+  }
 }

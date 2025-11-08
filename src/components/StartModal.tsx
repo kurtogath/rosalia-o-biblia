@@ -1,5 +1,6 @@
 "use client";
 
+import * as analytics from "@/lib/analytics";
 import { X } from "lucide-react";
 import { useState } from "react";
 
@@ -25,6 +26,12 @@ export default function StartModal({
     }
   };
 
+  const handleSliderChange = (newValue: number) => {
+    setSelectedCount(newValue);
+    // Track cuando el usuario cambia el slider
+    analytics.trackQuestionCountChanged(newValue);
+  };
+
   return (
     <div className="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="modal-content bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative animate-fadeIn">
@@ -41,16 +48,16 @@ export default function StartModal({
         </h2>
 
         <p className="text-gray-600 mb-6 text-sm">
-          Elige entre 5 y 15 frases para poner a prueba tu conocimiento
+          Elige entre 5 y 10 frases para poner a prueba tu conocimiento
         </p>
 
         <div className="mb-6">
           <input
             type="range"
             min="5"
-            max="15"
+            max="10"
             value={selectedCount}
-            onChange={(e) => setSelectedCount(Number(e.target.value))}
+            onChange={(e) => handleSliderChange(Number(e.target.value))}
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
           />
           <div className="flex justify-between text-xs text-gray-500 mt-2">
@@ -58,7 +65,7 @@ export default function StartModal({
             <span className="text-2xl font-bold text-purple-600">
               {selectedCount}
             </span>
-            <span>15</span>
+            <span>10</span>
           </div>
         </div>
 
