@@ -149,7 +149,7 @@ export async function generateStoryImage(
           await navigator.share({
             files: [file],
             title: 'Mi resultado en Rosalía o la Biblia',
-            text: '¿Puedes superarme?',
+            text: '¿Puedes superarme? https://rosalia.unkedition.com/',
           });
           return;
         }

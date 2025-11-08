@@ -421,7 +421,13 @@ https://rosalia.unkedition.com/
         </Link>
         <Link href="https://unkedition.com" target="blank">
           <span>
-            <Image src="/icon.webp" alt="unk icon" width={100} height={100} />
+            <Image
+              className="logo-web"
+              src="/icon.webp"
+              alt="unk icon"
+              width={100}
+              height={100}
+            />
           </span>
         </Link>
       </nav>

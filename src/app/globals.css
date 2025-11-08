@@ -280,6 +280,11 @@ body {
   .navbar {
     height: 80px;
   }
+
+  .logo-web {
+    width: 60px;
+    height: 60px;
+  }
 }
 
 .btn-share-twitter {
