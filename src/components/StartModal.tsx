@@ -20,7 +20,7 @@ export default function StartModal({
   if (!isOpen) return null;
 
   const handleStart = () => {
-    if (selectedCount >= 5 && selectedCount <= 15) {
+    if (selectedCount >= 10 && selectedCount <= 50) {
       onStart(selectedCount);
       onClose();
     }
@@ -48,24 +48,25 @@ export default function StartModal({
         </h2>
 
         <p className="text-gray-600 mb-6 text-sm">
-          Elige entre 5 y 10 frases para poner a prueba tu conocimiento
+          Elige entre 10 y 50 frases para poner a prueba tu conocimiento
         </p>
 
         <div className="mb-6">
           <input
             type="range"
-            min="5"
-            max="10"
+            min="10"
+            max="50"
+            step={10}
             value={selectedCount}
             onChange={(e) => handleSliderChange(Number(e.target.value))}
             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
           />
           <div className="flex justify-between text-xs text-gray-500 mt-2">
-            <span>5</span>
+            <span>10</span>
             <span className="text-2xl font-bold text-purple-600">
               {selectedCount}
             </span>
-            <span>10</span>
+            <span>50</span>
           </div>
         </div>
 
