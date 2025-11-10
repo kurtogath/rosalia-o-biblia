@@ -57,7 +57,7 @@ export async function generateStoryImage(
     const percentage = Math.round((correctAnswers / totalQuestions) * 100);
     ctx.font = 'bold 50px Arial, sans-serif';
     ctx.fillStyle = '#ffffff';
-    ctx.fillText(`Mi puntuación ${correctAnswers}/${totalQuestions} (${percentage}%)🎯`, canvas.width / 2, 1200);
+    ctx.fillText(`Mi puntuación: ${correctAnswers}/${totalQuestions} (${percentage}%)🎯`, canvas.width / 2, 1200);
   
     // Link del juego
     ctx.font = 'bold 60px Arial, sans-serif';
