@@ -351,7 +351,7 @@ https://rosalia.unkedition.com/
         {currentQuote && (
           <>
             <blockquote className="mb-6 text-2xl italic quote-zone font-bold">
-              " {currentQuote.frase} "
+              ❝ {currentQuote.frase} ❞
             </blockquote>
 
             <div className="mb-4 text-sm text-gray-500">
