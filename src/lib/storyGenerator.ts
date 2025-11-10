@@ -1,5 +1,5 @@
 // lib/story-generator.ts
-// Genera una imagen para compartir en Instagram Stories
+// Genera una imagen para compartir en RRSS
 
 export async function generateStoryImage(
     correctAnswers: number,
