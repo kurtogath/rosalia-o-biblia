@@ -14,6 +14,7 @@ async function fetchWithAuth(endpoint: string, options?: RequestInit) {
       ...options?.headers,
       'x-api-key': process.env.API_SECRET_KEY || '',
       'Content-Type': 'application/json',
+      'Cache-Control':'no-store'
     },
   });
 

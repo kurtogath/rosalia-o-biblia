@@ -6,8 +6,8 @@ export async function GET(req: Request) {
 
   // Reads the parameter 'limit' (default set to 1)
   const limitParam = Number(searchParams.get('limit')) || 1;
-  const limit = Math.max(1, Math.min(limitParam, 10));
-
+  const limit = Math.max(1, Math.min(limitParam, 50));
+  
   const { rows } = await pool.query(
     `
     SELECT id, frase
@@ -17,7 +17,7 @@ export async function GET(req: Request) {
     `,
     [limit]
   );
-
+  
   if (rows.length === 0) {
     return NextResponse.json(
       { error: 'No hay frases disponibles' },

@@ -51,7 +51,6 @@ export default function Home() {
     setLastCheck(null);
     try {
       const data = await getQuotes(count);
-
       if (!data?.length) throw new Error("No se pudo obtener frases");
 
       setQuotes(data);
