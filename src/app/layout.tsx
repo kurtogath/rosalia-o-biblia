@@ -13,11 +13,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// const   verificacion:any{
-//   "google":"pHFksfHPcm2YUo-i1um-u_Phpyso-IGuxL5Q1oQrPxE"
-// }
-
-// SEO
+// SEO optimizado
 export const metadata: Metadata = {
   title:
     "Rosalía o Biblia - ¿Puedes distinguir las letras de Rosalía de los versículos bíblicos?",
@@ -43,6 +39,19 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  // FAVICONS - Configuración explícita para Google
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: [{ url: "/favicon.ico" }],
+  },
+  manifest: "/site.webmanifest",
   openGraph: {
     type: "website",
     locale: "es_ES",
@@ -65,7 +74,7 @@ export const metadata: Metadata = {
     title: "Rosalía o Biblia - ¿Puedes distinguir?",
     description:
       "¿Letra de Rosalía o versículo bíblico? Pon a prueba tu conocimiento en este divertido juego.",
-    images: ["/og-image.png"],
+    images: ["/og-image.png"], // Misma imagen que OpenGraph
     creator: "@unkedition", // Pon tu usuario de Twitter si lo tienes
   },
   robots: {
@@ -80,7 +89,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "pHFksfHPcm2YUo-i1um-u_Phpyso-IGuxL5Q1oQrPxE",
+    google: "pHFksfHPcm2YUo-i1um-u_Phpyso-IGuxL5Q1oQrPxE", // Añadir cuando configures Google Search Console
   },
 };
 
@@ -96,40 +105,11 @@ export default function RootLayout({
           name="viewport"
           content="width=device-width, initial-scale=1, viewport-fit=cover"
         />
-        <link
-          rel="icon"
-          type="image/png"
-          href="/favicon-96x96.png"
-          sizes="96x96"
-        />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="shortcut icon" href="/favicon.ico" />
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/apple-touch-icon.png"
-        />
-        <meta name="apple-mobile-web-app-title" content="RosaliaBiblia" />
-        <link rel="manifest" href="/site.webmanifest" />
-        {/* OG-IMAGE */}
-        <meta property="og:title" content="Rosalia Quiz" />
-        <meta
-          property="og:description"
-          content="¿Letra de Rosalía o versículo de la Biblia?"
-        />
-        <meta
-          property="og:image"
-          content="https://rosalia.unkedition.com/og-image.png"
-        />
-        <meta property="og:url" content="https://rosalia.unkedition.com/" />
-        <meta property="og:type" content="website" />
+
         {/* Theme color para navegadores móviles */}
         <meta name="theme-color" content="#a51d29" />
-        {/* SEO */}
-        <meta
-          name="google-site-verification"
-          content="pHFksfHPcm2YUo-i1um-u_Phpyso-IGuxL5Q1oQrPxE"
-        />
+
+        {/* Structured Data para SEO */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -151,6 +131,7 @@ export default function RootLayout({
                 "@type": "Organization",
                 name: "UNK Edition",
                 url: "https://unkedition.com",
+                logo: "https://rosalia.unkedition.com/icon.webp",
               },
               aggregateRating: {
                 "@type": "AggregateRating",
@@ -168,6 +149,7 @@ export default function RootLayout({
         {process.env.NEXT_PUBLIC_GA_ID && (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
         )}
+
         <div className="bg-effect" />
         {children}
       </body>

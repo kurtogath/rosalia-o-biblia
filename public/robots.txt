@@ -1,7 +1,17 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://rosalia.unkedition.com/sitemap.xml
+# Permitir archivos estáticos de Next.js (JavaScript, CSS)
+Allow: /_next/static/*.js
+Allow: /_next/static/*.css
+Allow: /_next/static/*.woff
+Allow: /_next/static/*.woff2
 
+# Bloquear solo APIs (no queremos que se indexen)
 Disallow: /api/
-Disallow: /_next/static/
+
+# Bloquear archivos internos de Next.js que no son necesarios
+Disallow: /_next/data/
+
+# Sitemap
+Sitemap: https://rosalia.unkedition.com/sitemap.xml
